@@ -2,6 +2,8 @@
 
 const gulp = require('gulp'),
     del = require('del'),
+    colors = require('colors/safe'),
+    plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
     babel = require('gulp-babel'),
     eslint = require('gulp-eslint'),
@@ -20,11 +22,17 @@ const js = {
     app: `${paths.src}/js/app.js`,
     libraries: `${paths.node}/jquery/dist/jquery.js`
 }
+const logError = (err) => {
+    console.log(' ')
+    console.log(colors.yellow.underline(`PLUGIN: ${err.plugin}`))
+    console.log(colors.red(`ERROR: ${err.message}`))
+    console.log(' ')
+}
 // ----------------- //
 
 
 //CLEAN
-gulp.task('clean', function () {
+gulp.task('clean', () =>  {
     return del.sync([paths.build], function(err, paths){
               console.log('Deleted files/folders:\n', paths.join('\n'))
             })
@@ -33,15 +41,17 @@ gulp.task('clean', function () {
 
 
 // LESS COMPILERS && AUTOPREFIXING
-gulp.task('styles', function() {
+gulp.task('styles', () => {
     return gulp
             .src(`${paths.src}/LESS/master.less`)
+            .pipe(plumber(
+                function (err) {
+                    logError(err)
+                    this.emit('end')
+                }
+            ))
             .pipe(maps.init())
             .pipe(less())
-            .on('error', (err) => {
-                console.log(`Plugin: ${err.plugin}`)
-                console.log(`Error: ${err.message}`)
-            })
             .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 10'))
             .pipe(cleanCSS())
             .pipe(maps.write('./'))
@@ -52,60 +62,63 @@ gulp.task('styles', function() {
 
 
 // STATIC ASSETS
-gulp.task('html', function () {
+gulp.task('html', () =>  {
     return gulp.src(`${paths.src}/**/*.html`).pipe(gulp.dest(paths.build))
 })
-gulp.task('img', function () {
+gulp.task('img', () =>  {
     return gulp.src(`${paths.src}/img/*`).pipe(gulp.dest(`${paths.build}/img`))
 })
-gulp.task('fonts', function () {
+gulp.task('fonts', () =>  {
     return gulp.src(`${paths.src}/fonts/*`).pipe(gulp.dest(`${paths.build}/fonts`))
 })
-gulp.task('static', function () {
+gulp.task('static', () =>  {
     return gulp.start(['html', 'img', 'fonts'])
 })
 // ----------------- //
 
 
 // JS COMPILE
-gulp.task('lint', function () {
+gulp.task('lint', () =>  {
     return gulp.src(js.app)
             .pipe(eslint())
-            .pipe(eslint.format())
-            .pipe(eslint.results(function (results) {
-                console.log('LINTER RESULTS:');
-                console.log('Total Warnings: ' + results.warningCount);
-                console.log('Total Errors: ' + results.errorCount);
+            .pipe(eslint.formatEach('compact', process.stderr))
+            .pipe(eslint.results(results => {
+                if (results.warningCount == 0 && results.errorCount == 0) {
+                    console.log(colors.green('Eslint test passed! No errors in JS :)'))
+                }
             }))
 })
-gulp.task('js-libraries', function () {
+gulp.task('js-libraries', () =>  {
     return gulp.src(js.libraries)
             .pipe(concat('libraries.js'))
             .pipe(uglify())
             .pipe(gulp.dest(`${paths.build}/js`))
 })
-gulp.task('js-app', ['lint'], function () {
+gulp.task('js-app', ['lint'], () =>  {
     return gulp.src(js.app)
+    .pipe(plumber(
+        function (err) {
+            logError(err)
+            this.emit('end')
+        }
+    ))
             .pipe(maps.init())
             .pipe(babel({presets: ['es2015']}))
-            .on('error', (err) => {
-                console.log(`Plugin: ${err.plugin}`)
-                console.log(`Error: ${err.message}`)
-            })
             .pipe(concat('app.js'))
+            .pipe(uglify())
             .pipe(maps.write('./'))
             .pipe(gulp.dest(`${paths.build}/js/`))
 })
-gulp.task('js', function () {
+gulp.task('js', () =>  {
     return gulp.start(['js-libraries', 'js-app'])
 })
 // ----------------- //
 
 
 // WATCHERS
-gulp.task('watchFiles', function() {
+gulp.task('watchFiles', () => {
     gulp.watch(`${paths.src}/LESS/**/*.less`, ['styles'])
-    gulp.watch(`${paths.src}/app/**/*.js`, ['js-app'])
+    gulp.watch(`${paths.src}/**/*.js`, ['js-app'])
     gulp.watch(`${paths.src}/**/*.html`, ['html'])
 })
 
@@ -115,7 +128,7 @@ gulp.task('watch', ['watchFiles'])
 
 
 // STATIC SERVER && HOT RELOAD
-gulp.task('serve', function() {
+gulp.task('serve', () => {
     browserSync.init({
         server: {
             baseDir: `./${paths.build}`
@@ -129,6 +142,6 @@ gulp.task('serve', function() {
 
 
 //DEFAULT task
-gulp.task('default', function() {
+gulp.task('default', () => {
     gulp.start(['clean', 'static', 'js', 'styles'])
 })
