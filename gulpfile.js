@@ -12,22 +12,19 @@ const gulp = require('gulp'),
     browserSync = require('browser-sync').create()
 
 const paths = {
-    src: './src/',
-    build: './dist/',
-    node: './node_modules/'
+    src: './src',
+    build: './build',
+    node: './node_modules'
 }
 
 const jsLibraries = [
-
+    `${paths.node}/jquery/dist/jquery.js`
 ]
-
 
 const jsApp = [
-    paths.src + 'app/app.js'
+    `${paths.src}/js/app.js`
 ]
 // ----------------- //
-
-
 
 //CLEAN
 gulp.task('clean', function () {
@@ -37,34 +34,32 @@ gulp.task('clean', function () {
 })
 // ----------------- //
 
-
-// LESS COMPILERS
+// LESS COMPILERS && AUTOPREFIXING
 gulp.task('styles', function() {
     return gulp
-            .src(paths.src + 'LESS/app.less')
+            .src(`${paths.src}/LESS/master.less`)
             .pipe(maps.init())
             .pipe(less())
             .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 10'))
             .pipe(cleanCSS())
             .pipe(maps.write('./'))
-            .pipe(gulp.dest(paths.build + 'css/'))
+            .pipe(gulp.dest(`${paths.build}/css/`))
             .pipe(browserSync.stream())
 })
 // ----------------- //
 
 
-
 // STATIC ASSETS
 gulp.task('html', function () {
-    return gulp.src(paths.src + '**/*.html').pipe(gulp.dest(paths.build))
+    return gulp.src(`${paths.src}/**/*.html`).pipe(gulp.dest(paths.build))
 })
 
 gulp.task('img', function () {
-    return gulp.src(paths.src + 'img/*').pipe(gulp.dest(paths.build + 'img'))
+    return gulp.src(`${paths.src}/img/*`).pipe(gulp.dest(`${paths.build}/img`))
 })
 
 gulp.task('fonts', function () {
-    return gulp.src(paths.src + 'fonts/*').pipe(gulp.dest(paths.build + 'fonts'))
+    return gulp.src(`${paths.src}/fonts/*`).pipe(gulp.dest(`${paths.build}/fonts`))
 })
 
 gulp.task('static', function () {
@@ -72,22 +67,21 @@ gulp.task('static', function () {
 })
 // ----------------- //
 
-
 // JS COMPILE
 gulp.task('js-libraries', function () {
     return gulp.src(jsLibraries)
             .pipe(concat('libraries.js'))
             .pipe(uglify())
-            .pipe(gulp.dest(paths.build + 'js'))
+            .pipe(gulp.dest(`${paths.build}/js`))
 })
 
 gulp.task('js-app', function () {
     return gulp.src(jsApp)
             .pipe(maps.init())
-            .pipe(babel())
+            .pipe(babel({presets: ['es2015']}))
             .pipe(concat('app.js'))
             .pipe(maps.write('./'))
-            .pipe(gulp.dest(paths.build + 'js/'))
+            .pipe(gulp.dest(`${paths.build}/js/`))
 })
 
 gulp.task('js', function () {
@@ -95,34 +89,29 @@ gulp.task('js', function () {
 })
 // ----------------- //
 
-
-
 // WATCHERS
 gulp.task('watchFiles', function() {
-    gulp.watch(paths.src + 'LESS/**/*.less', ['styles'])
-    gulp.watch(paths.src + 'app/**/*.js', ['js-app'])
-    gulp.watch(paths.src + '**/*.html', ['html'])
+    gulp.watch(`${paths.src}/LESS/**/*.less`, ['styles'])
+    gulp.watch(`${paths.src}/app/**/*.js`, ['js-app'])
+    gulp.watch(`${paths.src}/**/*.html`, ['html'])
 })
 
 gulp.task('watch', ['watchFiles'])
 // ----------------- //
 
-
 // STATIC SERVER && HOT RELOAD
 gulp.task('serve', function() {
     browserSync.init({
         server: {
-            baseDir: './dist'
+            baseDir: `./${paths.build}`
         }
     })
 
-    gulp.watch('dist/*.html').on('change', browserSync.reload)
-    gulp.watch(paths.src + 'LESS/**/*.less').on('change', browserSync.reload)
-    gulp.watch(paths.src + 'app/**/*.js').on('change', browserSync.reload)
+    gulp.watch(`${paths.build}/*.html`).on('change', browserSync.reload)
+    gulp.watch(`${paths.build}/css/*.css`).on('change', browserSync.reload)
+    gulp.watch(`${paths.build}/js/*.js`).on('change', browserSync.reload)
 })
 // ----------------- //
-
-
 
 //DEFAULT task
 gulp.task('default', function() {
