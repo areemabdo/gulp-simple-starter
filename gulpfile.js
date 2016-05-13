@@ -66,7 +66,7 @@ gulp.task('html', () =>  {
     return gulp.src(`${paths.src}/**/*.html`).pipe(gulp.dest(paths.build))
 })
 gulp.task('img', () =>  {
-    return gulp.src(`${paths.src}/img/*`).pipe(gulp.dest(`${paths.build}/img`))
+    return gulp.src(`${paths.src}/img/**/*`).pipe(gulp.dest(`${paths.build}/img`))
 })
 gulp.task('fonts', () =>  {
     return gulp.src(`${paths.src}/fonts/*`).pipe(gulp.dest(`${paths.build}/fonts`))
@@ -120,6 +120,9 @@ gulp.task('watchFiles', () => {
     gulp.watch(`${paths.src}/LESS/**/*.less`, ['styles'])
     gulp.watch(`${paths.src}/**/*.js`, ['js-app'])
     gulp.watch(`${paths.src}/**/*.html`, ['html'])
+    gulp.watch(`${paths.src}/**/*.jpg`, ['img'])
+    gulp.watch(`${paths.src}/**/*.png`, ['img'])
+    gulp.watch(`${paths.src}/**/*.svg`, ['img'])
 })
 
 
@@ -135,6 +138,7 @@ gulp.task('serve', () => {
         }
     })
     gulp.watch(`${paths.build}/*.html`).on('change', browserSync.reload)
+    gulp.watch(`${paths.build}/img/**/*`).on('change', browserSync.reload)
     gulp.watch(`${paths.build}/css/*.css`).on('change', browserSync.reload)
     gulp.watch(`${paths.build}/js/*.js`).on('change', browserSync.reload)
 })
