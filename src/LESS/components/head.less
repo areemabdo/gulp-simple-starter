@@ -1,0 +1,75 @@
+.head {
+
+    &__menu-toggle {
+        width: 44px;
+        height: 44px;
+        text-align: center;
+        padding-top: 12px;
+
+        >span {
+            display: block;
+            width: 20px;
+        	height: 3px;
+        	border-radius: 2px;
+            margin: 0 auto 4px auto;
+            background-color: @scarlet;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__container {
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__logo {
+        &__img {
+            display: block;
+            width: 150px;
+        }
+    }
+
+    &__contacts {
+
+        &__phone {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        &__adress {
+            font-weight: 300;
+        }
+
+        .icon {
+            margin-right: 7px;
+        }
+    }
+
+    &__map-link {
+        line-height: 1;
+    }
+
+    &__open-hours {
+        &__weekdays, &__weekend {
+            font-weight: 300;
+        }
+
+        &__weekdays {
+            margin-bottom: 4px;
+        }
+
+        &__days, &__hours {
+            display: inline-block;
+        }
+
+        &__days {
+            margin-right: 15px;
+        }
+    }
+
+}

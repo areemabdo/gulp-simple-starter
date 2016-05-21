@@ -1,0 +1,45 @@
+.comfort {
+    position: relative;
+    z-index: 10;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        background-image: url('/img/bg/comfort.jpg');
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: -10;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        background-image: linear-gradient(to bottom,#121212,rgba(15,15,15,.5));
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        z-index: -5;
+    }
+}
+
+.comfort-block {
+    text-align: center;
+
+    &__list {
+        margin-bottom: 65px;
+    }
+
+    &__row {
+        margin-top: 110px;
+    }
+
+    &__title {
+        font-size: 16px;
+        margin-top: 20px;
+    }
+}

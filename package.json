@@ -1,12 +1,13 @@
 {
   "name": "AllenGulpSimpleStarter",
   "version": "1.5.0",
-  "description": "My gulp starter for simple web projects (ES6+Babel+EsLint+jQuery+LESS+BrowserSync)",
+  "description": "My gulp starter for simple web projects (Gulp+ES6+Babel+EsLint+jQuery+LESS+BrowserSync)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Allend13//gulp-simple-starter.git"
   },
   "keywords": [
+    "Gulp",
     "ES6",
     "Babel",
     "Eslint",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "babel-eslint": "^6.0.0-beta.6",
     "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.5.0",
     "browser-sync": "^2.11.1",
     "colors": "^1.1.2",
     "del": "^2.2.0",
@@ -33,6 +35,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-clean-css": "^2.0.4",
     "gulp-concat": "^2.6.0",
+    "gulp-css-base64": "^1.3.4",
     "gulp-eslint": "^2.0.0",
     "gulp-less": "^3.0.5",
     "gulp-plumber": "^1.1.0",

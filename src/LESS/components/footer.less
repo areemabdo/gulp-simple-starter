@@ -1,0 +1,72 @@
+.footer {
+    padding-bottom: 20px;
+
+    &__block {
+
+        &:last-of-type {
+            text-align: right;
+        }
+    }
+
+    &__logo {
+        margin-bottom: 20px;
+
+        &__img {
+            max-width: 130px;
+        }
+    }
+
+    &__social {
+        margin-bottom: 20px;
+    }
+
+    &__adress {
+        margin-bottom: 10px;
+    }
+
+    &__credentials {
+        margin-top: 25px;
+        color: #6b6b6b;
+        font-size: 16px;
+
+        &__block {
+            &:first-of-type {
+                text-align: left;
+            }
+
+            &:last-of-type {
+                text-align: right;
+            }
+
+            @media(max-width: @screen-sm) {
+                &:first-of-type,&:last-of-type {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+.btn {
+    &--social {
+        width: 100px;
+        height: 35px;
+        font-size: 14px;
+        font-weight: 400;
+        margin-right: 10px;
+        border-radius: 4px;
+        font-shadow: none;
+    }
+
+    &--vk {
+        .button-variant(white, #57789a, #57789a);
+    }
+
+    &--fb {
+        .button-variant(white, #4f6aa0, #4f6aa0);
+    }
+
+    &--inst {
+        .button-variant(white, #1c5a81, #1c5a81);
+    }
+}

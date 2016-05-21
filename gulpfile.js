@@ -1,8 +1,13 @@
 'use strict'
 
-const gulp = require('gulp'),
+// SYSTEM PLUGINS
+const
+    gulp = require('gulp'),
     del = require('del'),
+    browserSync = require('browser-sync').create(),
     colors = require('colors/safe'),
+
+// WORKFLOW PUGINS
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
     babel = require('gulp-babel'),
@@ -12,16 +17,27 @@ const gulp = require('gulp'),
     cleanCSS = require('gulp-clean-css'),
     uglify = require('gulp-uglify'),
     maps = require('gulp-sourcemaps'),
-    browserSync = require('browser-sync').create()
+    cssBase64 = require('gulp-css-base64')
+
+
+// PATHS TO MODULES AND SRC
 const paths = {
-    src: './src',
-    build: './build',
-    node: './node_modules'
+    src: 'src',
+    build: 'build',
+    node: 'node_modules'
 }
+// ----------------- //
+
+
+// PATHS TO JS FILES AND LIBRARIES
 const js = {
     app: `${paths.src}/js/app.js`,
     libraries: `${paths.node}/jquery/dist/jquery.js`
 }
+// ----------------- //
+
+
+//ERRORS HANDLING AND LOGGING TO CONSOLE
 const logError = (err) => {
     console.log(' ')
     console.log(colors.yellow.underline(`PLUGIN: ${err.plugin}`))
@@ -31,7 +47,7 @@ const logError = (err) => {
 // ----------------- //
 
 
-//CLEAN
+//CLEAN BUILD FOLDER
 gulp.task('clean', () =>  {
     return del.sync([paths.build], function(err, paths){
               console.log('Deleted files/folders:\n', paths.join('\n'))
@@ -40,7 +56,7 @@ gulp.task('clean', () =>  {
 // ----------------- //
 
 
-// LESS COMPILERS && AUTOPREFIXING
+// LESS COMPILING && AUTOPREFIXING && INLINING SMALL IMAGES
 gulp.task('styles', () => {
     return gulp
             .src(`${paths.src}/LESS/master.less`)
@@ -53,6 +69,9 @@ gulp.task('styles', () => {
             .pipe(maps.init())
             .pipe(less())
             .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 10'))
+            .pipe(cssBase64({
+                baseDir: `${paths.src}`
+            }))
             .pipe(cleanCSS())
             .pipe(maps.write('./'))
             .pipe(gulp.dest(`${paths.build}/css/`))
@@ -77,7 +96,7 @@ gulp.task('static', () =>  {
 // ----------------- //
 
 
-// JS COMPILE
+// JS BABEL TRANSPILING && LINTING && COMPILING
 gulp.task('lint', () =>  {
     return gulp.src(js.app)
             .pipe(eslint())
@@ -103,7 +122,7 @@ gulp.task('js-app', ['lint'], () =>  {
         }
     ))
             .pipe(maps.init())
-            .pipe(babel({presets: ['es2015']}))
+            .pipe(babel({ presets: ['es2015', 'stage-0'] }))
             .pipe(concat('app.js'))
             .pipe(uglify())
             .pipe(maps.write('./'))
@@ -120,11 +139,8 @@ gulp.task('watchFiles', () => {
     gulp.watch(`${paths.src}/LESS/**/*.less`, ['styles'])
     gulp.watch(`${paths.src}/**/*.js`, ['js-app'])
     gulp.watch(`${paths.src}/**/*.html`, ['html'])
-    gulp.watch(`${paths.src}/**/*.jpg`, ['img'])
-    gulp.watch(`${paths.src}/**/*.png`, ['img'])
-    gulp.watch(`${paths.src}/**/*.svg`, ['img'])
+    gulp.watch(`${paths.src}/**/*.{jpg, jpeg, gif, png, svg}`, ['img'])
 })
-
 
 gulp.task('watch', ['watchFiles'])
 // ----------------- //
@@ -137,10 +153,7 @@ gulp.task('serve', () => {
             baseDir: `./${paths.build}`
         }
     })
-    gulp.watch(`${paths.build}/*.html`).on('change', browserSync.reload)
-    gulp.watch(`${paths.build}/img/**/*`).on('change', browserSync.reload)
-    gulp.watch(`${paths.build}/css/*.css`).on('change', browserSync.reload)
-    gulp.watch(`${paths.build}/js/*.js`).on('change', browserSync.reload)
+    gulp.watch(`${paths.build}/**/*`).on('change', browserSync.reload)
 })
 // ----------------- //
 

@@ -1,3 +1,62 @@
 * {
 	box-sizing: border-box;
 }
+
+html, body {
+	background: @black;
+	color: #fff;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+h1 {
+	font-size: 50px;
+}
+
+h2, h3, h4, h5 {
+	font-weight: 400;
+}
+
+p {
+	font-weight: 300;
+	margin-bottom: 10px;
+}
+
+a {
+	color: @scarlet;
+	text-decoration: none;
+	transition: opacity .1s ease-out;
+
+	&:hover {
+		color: @scarlet;
+		opacity: 0.85;
+		text-decoration: none;
+	}
+}
+
+.map-link {
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	padding-bottom: 4px;
+	border-bottom: 1px dashed @scarlet;
+}
+
+.slide {
+	padding-top: 30px;
+	padding-bottom: 50px;
+	position: relative;
+
+	&__header {
+		text-align: center;
+		margin-top: 0;
+		margin-bottom: 10px;
+	}
+
+	&__subheader {
+		text-align: center;
+		font-size: 20px;
+		font-weight: 300;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+}

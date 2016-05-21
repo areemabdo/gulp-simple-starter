@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="37px" height="36px" viewBox="0 0 37 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>air_element</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Main" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Main-1280" transform="translate(-195.000000, -2326.000000)" stroke-width="2" stroke="#FFFFFF">
+            <g id="Group-7" transform="translate(112.000000, 2137.000000)">
+                <g id="air_element" transform="translate(83.000000, 190.000000)">
+                    <g id="Layer_1">
+                        <path d="M0,17.25 L28.8,17.25" id="Shape"></path>
+                        <path d="M0,11.25 L19.125,11.25" id="Shape"></path>
+                        <path d="M28.8,17.25 C32.775,17.25 36,20.475 36,24.45 C36,28.425 32.775,31.5 28.8,31.65 C25.725,31.725 23.175,29.85 22.125,26.925" id="Shape"></path>
+                        <path d="M19.125,11.25 C22.2,11.25 24.75,8.7 24.75,5.625 C24.75,2.55 22.2,0 19.125,0 C16.725,0 14.7,1.5 13.875,3.6" id="Shape"></path>
+                        <path d="M0,22.5 L10.125,22.5" id="Shape"></path>
+                        <path d="M10.125,22.5 C13.2,22.5 15.75,25.05 15.75,28.125 C15.75,31.2 13.2,33.75 10.125,33.75 C7.95,33.75 6.075,32.55 5.175,30.75" id="Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
